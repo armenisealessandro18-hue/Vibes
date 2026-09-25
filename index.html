@@ -89,6 +89,41 @@
     padding: 10px 6px 4px;
     border-top: 1px solid var(--border);
   }
+  .api-key-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    padding: 4px 0 8px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .api-key-btn:hover { color: var(--text); }
+  .api-key-panel { padding-bottom: 8px; }
+  .api-key-panel input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 7px;
+    padding: 7px 9px;
+    font-size: 12.5px;
+    margin-bottom: 6px;
+  }
+  .api-key-panel button {
+    width: 100%;
+    background: var(--accent);
+    color: var(--accent-text);
+    border: none;
+    border-radius: 7px;
+    padding: 7px 9px;
+    font-size: 12.5px;
+    cursor: pointer;
+  }
+  .api-key-hint { font-size: 11px; color: var(--text-muted); margin: 6px 0 0; line-height: 1.4; }
 
   .sidebar-scrim { display: none; }
 
@@ -137,6 +172,120 @@
   }
   @media (max-width: 760px) { .hamburger { display: inline-flex; } }
   .topbar-title { font-size: 14px; color: var(--text-muted); }
+  .voice-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .voice-toggle:hover { color: var(--text); border-color: var(--text-muted); }
+  .voice-toggle[hidden] { display: none; }
+  .voice-toggle .bars {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    height: 12px;
+  }
+  .voice-toggle .bars span {
+    width: 2px;
+    background: currentColor;
+    border-radius: 1px;
+  }
+  .voice-toggle .bars span:nth-child(1) { height: 6px; }
+  .voice-toggle .bars span:nth-child(2) { height: 12px; }
+  .voice-toggle .bars span:nth-child(3) { height: 4px; }
+  .voice-toggle .bars span:nth-child(4) { height: 9px; }
+
+  /* ---------- modalità vocale ---------- */
+  .voice-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: var(--bg);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: env(safe-area-inset-top, 0px) 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  }
+  .voice-overlay.active { display: flex; }
+  .voice-close {
+    position: absolute;
+    top: calc(16px + env(safe-area-inset-top, 0px));
+    right: 16px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .voice-close:hover { color: var(--text); border-color: var(--text-muted); }
+  .voice-orb {
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+  .voice-orb.listening {
+    background: var(--accent);
+    animation: orb-listen 1.6s ease-in-out infinite;
+  }
+  .voice-orb.thinking {
+    background: var(--surface-hover);
+    animation: orb-think 1s linear infinite;
+  }
+  .voice-orb.speaking {
+    background: var(--accent);
+    animation: orb-speak 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes orb-listen {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  @keyframes orb-speak {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.12); }
+  }
+  @keyframes orb-think {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(0.94); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+  .voice-status {
+    font-size: 14.5px;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 320px;
+  }
+  .voice-transcript {
+    font-size: 16px;
+    text-align: center;
+    max-width: 480px;
+    min-height: 24px;
+    line-height: 1.5;
+  }
+  .voice-mute {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .voice-mute:hover { color: var(--text); border-color: var(--text-muted); }
+  .voice-mute[aria-pressed="true"] { color: #C1443A; border-color: #C1443A; }
 
   /* ---------- greeting / empty state ---------- */
   .greeting {
@@ -275,6 +424,28 @@
     padding: 6px 0;
   }
   .composer textarea::placeholder { color: var(--text-muted); }
+  .mic-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .mic-btn:hover { color: var(--text); border-color: var(--text-muted); }
+  .mic-btn.recording {
+    color: #C1443A;
+    border-color: #C1443A;
+    animation: pulse 1.2s infinite;
+  }
+  .mic-btn[hidden] { display: none; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(193,68,58,0.35); }
+    50% { box-shadow: 0 0 0 6px rgba(193,68,58,0); }
+  }
   .send-btn {
     flex-shrink: 0;
     width: 34px; height: 34px;
@@ -304,13 +475,25 @@
       <button class="new-chat-btn" id="newChat" type="button">＋ Nuova conversazione</button>
     </div>
     <div class="sidebar-fill"></div>
-    <div class="sidebar-foot">Scrive testi e prompt per immagini con l'AI.</div>
+    <div class="sidebar-foot">
+      <button class="api-key-btn" id="apiKeyToggle" type="button">Chiave API</button>
+      <div class="api-key-panel" id="apiKeyPanel" hidden>
+        <input type="password" id="apiKeyInput" placeholder="AIza...">
+        <button id="apiKeySave" type="button">Salva</button>
+        <p class="api-key-hint">Chiave API di Google Gemini. Resta salvata solo su questo browser.</p>
+      </div>
+      Scrive testi e prompt per immagini con l'AI.
+    </div>
   </aside>
 
   <div class="main">
     <div class="topbar">
       <button class="hamburger" id="hamburger" type="button" aria-label="Apri menu">☰</button>
       <span class="topbar-title"></span>
+      <button class="voice-toggle" id="voiceToggle" type="button" hidden>
+        <span class="bars"><span></span><span></span><span></span><span></span></span>
+        Voce
+      </button>
     </div>
 
     <div class="greeting" id="greeting">
@@ -340,10 +523,19 @@
     <div class="composer-wrap">
       <div class="composer">
         <textarea id="input" placeholder="Scrivi un messaggio…" rows="1"></textarea>
+        <button class="mic-btn" id="micBtn" type="button" hidden aria-label="Detta un messaggio">●</button>
         <button class="send-btn" id="sendBtn" type="button" disabled aria-label="Invia">➤</button>
       </div>
       <div class="composer-hint">Vibes può sbagliare. Controlla sempre le informazioni importanti.</div>
     </div>
+  </div>
+
+  <div class="voice-overlay" id="voiceOverlay">
+    <button class="voice-close" id="voiceClose" type="button" aria-label="Chiudi modalità vocale">✕</button>
+    <div class="voice-orb" id="voiceOrb"></div>
+    <div class="voice-status" id="voiceStatus">Tocca per iniziare a parlare</div>
+    <div class="voice-transcript" id="voiceTranscript"></div>
+    <button class="voice-mute" id="voiceMute" type="button" aria-pressed="false" hidden>Interrompi risposta</button>
   </div>
 </div>
 
@@ -359,17 +551,318 @@
   const chatInner = document.getElementById('chatInner');
   const input = document.getElementById('input');
   const sendBtn = document.getElementById('sendBtn');
+  const micBtn = document.getElementById('micBtn');
   const errLine = document.getElementById('errLine');
 
   // ---------- sidebar mobile ----------
   hamburger.addEventListener('click', () => app.classList.add('sidebar-open'));
   scrim.addEventListener('click', () => app.classList.remove('sidebar-open'));
 
-  // ---------- capability sample ----------
-  let samplePromise = null;
+  // ---------- generazione AI: solo Google Gemini, via API diretta ----------
+  const LS_KEY = 'vibes_gemini_api_key';
+  function getStoredKey() {
+    try { return localStorage.getItem(LS_KEY) || ''; } catch (e) { return ''; }
+  }
+  function setStoredKey(k) {
+    try { localStorage.setItem(LS_KEY, k); } catch (e) { /* storage non disponibile */ }
+  }
+
+  async function sampleViaDirectApi(input, opts) {
+    opts = opts || {};
+    const key = getStoredKey();
+    if (!key) { const err = new Error('missing_key'); err.code = 'missing_key'; throw err; }
+    const turns = Array.isArray(input) ? input : [{ role: 'user', content: input }];
+    const contents = turns.map(t => ({
+      role: t.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: t.content }]
+    }));
+    const model = 'gemini-flash-latest';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${encodeURIComponent(key)}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ contents })
+    });
+    if (!res.ok) {
+      const err = new Error('api_error');
+      err.code = (res.status === 400 || res.status === 403) ? 'not_granted' : 'error';
+      throw err;
+    }
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '', text = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data:')) continue;
+        const data = line.slice(5).trim();
+        if (!data) continue;
+        try {
+          const evt = JSON.parse(data);
+          const parts = evt.candidates && evt.candidates[0] && evt.candidates[0].content && evt.candidates[0].content.parts;
+          if (parts) {
+            for (const p of parts) {
+              if (p.text) {
+                text += p.text;
+                if (opts.onText) opts.onText({ text });
+              }
+            }
+          }
+        } catch (e) { /* riga incompleta, ignora */ }
+      }
+    }
+    return { text };
+  }
+
   function getSample() {
-    if (!samplePromise) samplePromise = (window.claude ? claude.use('sample') : Promise.resolve(null));
-    return samplePromise;
+    return Promise.resolve(sampleViaDirectApi);
+  }
+
+  const apiKeyToggle = document.getElementById('apiKeyToggle');
+  const apiKeyPanel = document.getElementById('apiKeyPanel');
+  const apiKeyInput = document.getElementById('apiKeyInput');
+  const apiKeySave = document.getElementById('apiKeySave');
+  apiKeyInput.value = getStoredKey();
+  apiKeyToggle.addEventListener('click', () => { apiKeyPanel.hidden = !apiKeyPanel.hidden; });
+  apiKeySave.addEventListener('click', () => {
+    setStoredKey(apiKeyInput.value.trim());
+    apiKeyPanel.hidden = true;
+  });
+  function openApiKeyPanel() {
+    apiKeyPanel.hidden = false;
+    if (window.innerWidth <= 760) app.classList.add('sidebar-open');
+    apiKeyInput.focus();
+  }
+
+  // ---------- speech to text ----------
+  const SpeechRecognitionImpl = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognizer = null;
+  let recording = false;
+  let baseText = '';
+
+  if (SpeechRecognitionImpl) {
+    micBtn.hidden = false;
+    recognizer = new SpeechRecognitionImpl();
+    recognizer.lang = 'it-IT';
+    recognizer.continuous = true;
+    recognizer.interimResults = true;
+
+    recognizer.addEventListener('result', (e) => {
+      let interim = '';
+      let final = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const chunk = e.results[i][0].transcript;
+        if (e.results[i].isFinal) final += chunk;
+        else interim += chunk;
+      }
+      if (final) baseText = (baseText ? baseText + ' ' : '') + final.trim();
+      input.value = (baseText + ' ' + interim).trim();
+      autoGrow();
+      sendBtn.disabled = !input.value.trim();
+    });
+
+    recognizer.addEventListener('error', () => {
+      stopRecording();
+      showError('Non sono riuscito ad ascoltare. Controlla il permesso del microfono e riprova.');
+    });
+
+    recognizer.addEventListener('end', () => {
+      if (recording) {
+        // interruzione inattesa: prova a riavviare
+        try { recognizer.start(); } catch (e) { stopRecording(); }
+      }
+    });
+  }
+
+  function startRecording() {
+    if (!recognizer || recording) return;
+    hideError();
+    baseText = input.value.trim();
+    recording = true;
+    micBtn.classList.add('recording');
+    try { recognizer.start(); } catch (e) { stopRecording(); }
+  }
+  function stopRecording() {
+    if (!recognizer) return;
+    recording = false;
+    micBtn.classList.remove('recording');
+    try { recognizer.stop(); } catch (e) { /* già ferma */ }
+  }
+  micBtn.addEventListener('click', () => {
+    if (recording) stopRecording();
+    else startRecording();
+  });
+
+  // ---------- modalità vocale (conversazione a mani libere) ----------
+  const voiceToggle = document.getElementById('voiceToggle');
+  const voiceOverlay = document.getElementById('voiceOverlay');
+  const voiceClose = document.getElementById('voiceClose');
+  const voiceOrb = document.getElementById('voiceOrb');
+  const voiceStatus = document.getElementById('voiceStatus');
+  const voiceTranscript = document.getElementById('voiceTranscript');
+  const voiceMute = document.getElementById('voiceMute');
+
+  const speechSynthesisImpl = window.speechSynthesis;
+  const voiceModeSupported = !!(SpeechRecognitionImpl && speechSynthesisImpl);
+
+  let voiceRecognizer = null;
+  let voiceState = 'idle'; // idle | listening | thinking | speaking
+  let voiceOpen = false;
+  let currentUtterance = null;
+
+  if (voiceModeSupported) {
+    voiceToggle.hidden = false;
+    voiceRecognizer = new SpeechRecognitionImpl();
+    voiceRecognizer.lang = 'it-IT';
+    voiceRecognizer.continuous = false;
+    voiceRecognizer.interimResults = true;
+
+    voiceRecognizer.addEventListener('result', (e) => {
+      let interim = '';
+      let final = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const chunk = e.results[i][0].transcript;
+        if (e.results[i].isFinal) final += chunk;
+        else interim += chunk;
+      }
+      voiceTranscript.textContent = (final || interim).trim();
+      if (final.trim()) handleVoiceTurn(final.trim());
+    });
+
+    voiceRecognizer.addEventListener('error', (e) => {
+      if (!voiceOpen) return;
+      if (e.error === 'no-speech') {
+        // nessuno ha parlato: riprova ad ascoltare
+        if (voiceState === 'listening') startVoiceListening();
+        return;
+      }
+      setVoiceState('idle');
+      voiceStatus.textContent = 'Non riesco ad ascoltare. Controlla il permesso del microfono.';
+    });
+
+    voiceRecognizer.addEventListener('end', () => {
+      if (voiceOpen && voiceState === 'listening') {
+        // il riconoscimento si ferma da solo dopo una pausa: riavvia se serve
+        try { voiceRecognizer.start(); } catch (e) { /* già in corso */ }
+      }
+    });
+  }
+
+  function setVoiceState(state) {
+    voiceState = state;
+    voiceOrb.classList.remove('listening', 'thinking', 'speaking');
+    voiceMute.hidden = state !== 'speaking';
+    if (state === 'listening') {
+      voiceOrb.classList.add('listening');
+      voiceStatus.textContent = 'Ti ascolto…';
+    } else if (state === 'thinking') {
+      voiceOrb.classList.add('thinking');
+      voiceStatus.textContent = 'Ci penso…';
+    } else if (state === 'speaking') {
+      voiceOrb.classList.add('speaking');
+      voiceStatus.textContent = 'Sto rispondendo…';
+    } else {
+      voiceStatus.textContent = 'Tocca per iniziare a parlare';
+    }
+  }
+
+  function startVoiceListening() {
+    if (!voiceOpen) return;
+    voiceTranscript.textContent = '';
+    setVoiceState('listening');
+    try { voiceRecognizer.start(); } catch (e) { /* già in corso */ }
+  }
+
+  function openVoiceMode() {
+    if (!voiceModeSupported) {
+      showError('La modalità vocale non è supportata da questo browser.');
+      return;
+    }
+    if (recording) stopRecording();
+    voiceOpen = true;
+    voiceOverlay.classList.add('active');
+    startVoiceListening();
+  }
+
+  function closeVoiceMode() {
+    voiceOpen = false;
+    speechSynthesisImpl.cancel();
+    try { voiceRecognizer.stop(); } catch (e) { /* già ferma */ }
+    voiceOverlay.classList.remove('active');
+    setVoiceState('idle');
+  }
+
+  voiceToggle.addEventListener('click', openVoiceMode);
+  voiceClose.addEventListener('click', closeVoiceMode);
+  voiceMute.addEventListener('click', () => {
+    if (voiceState === 'speaking') {
+      speechSynthesisImpl.cancel();
+      startVoiceListening();
+    }
+  });
+
+  async function handleVoiceTurn(text) {
+    try { voiceRecognizer.stop(); } catch (e) { /* già ferma */ }
+    setVoiceState('thinking');
+
+    if (greeting.style.display !== 'none') {
+      greeting.style.display = 'none';
+      chat.classList.add('active');
+    }
+    addUserBubble(text);
+    history.push({ role: 'user', content: text });
+
+    const sample = await getSample();
+    if (!sample) {
+      if (!voiceOpen) return;
+      setVoiceState('idle');
+      voiceStatus.textContent = 'La generazione AI non è disponibile in questa vista.';
+      return;
+    }
+
+    const row = addAssistantBubble();
+    const bubble = row.querySelector('.bubble');
+    const messages = [
+      { role: 'user', content: PERSONA_INTRO },
+      { role: 'assistant', content: PERSONA_ACK },
+      ...history
+    ];
+
+    try {
+      const result = await sample(messages, { modelTier: 'default' });
+      const finalText = (result && result.text) ? result.text.trim() : '';
+      bubble.textContent = finalText || 'Non sono riuscito a rispondere.';
+      history.push({ role: 'assistant', content: finalText });
+
+      if (!voiceOpen) return;
+      if (!finalText) { startVoiceListening(); return; }
+
+      setVoiceState('speaking');
+      voiceTranscript.textContent = finalText;
+      currentUtterance = new SpeechSynthesisUtterance(finalText);
+      currentUtterance.lang = 'it-IT';
+      currentUtterance.onend = () => { if (voiceOpen) startVoiceListening(); };
+      currentUtterance.onerror = () => { if (voiceOpen) startVoiceListening(); };
+      speechSynthesisImpl.cancel();
+      speechSynthesisImpl.speak(currentUtterance);
+    } catch (err) {
+      if (!voiceOpen) return;
+      if (err && err.code === 'missing_key') {
+        bubble.textContent = 'Aggiungi la tua chiave API di Google Gemini per usare Vibes.';
+        setVoiceState('idle');
+        voiceStatus.textContent = 'Serve una chiave API.';
+        closeVoiceMode();
+        openApiKeyPanel();
+        return;
+      }
+      bubble.textContent = 'Non sono riuscito a rispondere. Riprova.';
+      setVoiceState('idle');
+      voiceStatus.textContent = 'Qualcosa è andato storto. Tocca per riprovare.';
+    }
   }
 
   // ---------- stato conversazione ----------
@@ -388,6 +881,7 @@
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
+      if (recording) stopRecording();
       trySend();
     }
   });
@@ -404,6 +898,8 @@
   newChatBtn.addEventListener('click', resetChat);
 
   function resetChat() {
+    if (recording) stopRecording();
+    if (voiceOpen) closeVoiceMode();
     history = [];
     chatInner.innerHTML = '';
     chat.classList.remove('active');
@@ -448,6 +944,7 @@
     const text = input.value.trim();
     if (!text) return;
     hideError();
+    if (recording) stopRecording();
 
     if (greeting.style.display !== 'none') {
       greeting.style.display = 'none';
@@ -505,11 +1002,18 @@
         actions.appendChild(copyBtn);
       }
     } catch (err) {
-      const msg = (err && err.code === 'not_granted')
-        ? 'Permesso non concesso per generare contenuti qui.'
-        : 'Non sono riuscito a rispondere. Riprova.';
-      bubble.textContent = msg;
-      showError(msg);
+      if (err && err.code === 'missing_key') {
+        const msg = 'Aggiungi la tua chiave API di Google Gemini (link "Chiave API" nel menu) per usare Vibes.';
+        bubble.textContent = msg;
+        showError(msg);
+        openApiKeyPanel();
+      } else {
+        const msg = (err && err.code === 'not_granted')
+          ? 'Permesso non concesso, oppure la chiave API non è valida.'
+          : 'Non sono riuscito a rispondere. Riprova.';
+        bubble.textContent = msg;
+        showError(msg);
+      }
     }
     chat.scrollTop = chat.scrollHeight;
   }
